@@ -1,0 +1,21 @@
+{
+  "name": "micros",
+  "version": "1.0.0",
+  "description": "control de acceso usando ATMEGA48 + NodeJS",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Didier Gomez & Moisés Morales",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "knex": "^0.14.2",
+    "moment": "^2.19.3",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.12.5",
+    "serialport": "^6.0.4",
+    "socket.io": "^2.0.4"
+  }
+}
