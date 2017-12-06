@@ -1,7 +1,7 @@
 'use strict'
 
-const app = require('./app');
 // web server setup
+const app = require('./app');
 const server = require('http').Server(app);
 server.listen(3000, () => {
 	console.log('Server started...');
@@ -9,7 +9,6 @@ server.listen(3000, () => {
 });
 
 //serial port setup
-
 var io = require('socket.io').listen(server);
 const SerialPort = require('serialport');
 const Readline = SerialPort.parsers.Readline;
