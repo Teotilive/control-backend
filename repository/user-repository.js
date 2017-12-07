@@ -41,6 +41,16 @@ function updateUser (user) {
     return query;
  };
 
+ function findUser (name, password) {
+	var whereData = {
+		"name": name,
+		"password": password
+	}
+    var query = knex('users').where(whereData);
+    console.log(query.toQuery());
+    return query;
+ };
+
 module.exports = {
-	getUsers, createUser,updateUser,deleteUser
+	getUsers, createUser,updateUser,deleteUser, findUser
 };
