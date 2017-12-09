@@ -19,7 +19,7 @@ CustomPort.on('open', () => {
 
 CustomPort.on('data', (data) => {
 	console.log('Read: '+data);
-	if(data!='F') {
+	if(data!='*') {
 		if(delCount==0) {
 			usr+= data;
 		} else {
