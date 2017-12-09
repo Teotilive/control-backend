@@ -5,7 +5,11 @@ const bodyParser = require('body-parser');
 const UserDAO = require('./repository/user-repository');
 // credentials grant
 var allowCrossDomain = (req, res, next) => {
-	res.header("Access-Control-Allow-Origin", req.headers.origin);
+	
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With, Origin, Accept");
 	next();
 };
 
@@ -14,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
-   res.send('http://localhost:4200/');
+   res.redirect('http://localhost:4200/');
 });
 
 app.get('/user', function (req, res) {
@@ -35,7 +39,7 @@ app.put('/user', function (req, res) {
 	};
 	var result = UserDAO.updateUser(user);
 	result.then(()=> {
-		res.sendStatus(200);
+		res.status(200).send({"updated": id});
 	})
 	.catch(e => {
 		console.log(e.stack);
@@ -49,8 +53,8 @@ app.post('/user', function (req, res) {
 		"password": req.body.password 
 	};
 	var result = UserDAO.createUser(user);
-	result.then(()=> {
-		res.sendStatus(200);
+	result.then((id)=> {
+		res.status(200).send({"created": id});
 	})
 	.catch(e => {
 		console.log(e.stack);
@@ -58,10 +62,10 @@ app.post('/user', function (req, res) {
 	});
 });
 
-app.delete('/user', function (req, res) {
-	var result = UserDAO.deleteUser(req.body.name);
-	result.then(()=> {
-		res.sendStatus(200);
+app.delete('/user/:name', function (req, res) {
+	var result = UserDAO.deleteUser(req.params.name);
+	result.then((id)=> {
+		res.status(200).send({"deleted": id});
 	})
 	.catch(e => {
 		console.log(e.stack);

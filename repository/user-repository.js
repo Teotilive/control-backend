@@ -5,7 +5,6 @@ const DateUtil = require('../utils/date-util');
 
 function getUsers () {
     var query = knex('users').select('*');
-    console.log(query.toQuery());
     return query;
  };
 
@@ -29,22 +28,22 @@ function updateUser (user) {
 		"last_access": DateUtil.currentDateBD()
 	};
 	
-    var query = knex('users').insert(data);
+    var query = knex('users').insert(data).returning("id");
     console.log(query.toQuery());
-    return query;
+	return query;
  };
 
  function deleteUser (name) {
 	var whereData = {"name":name};
-    var query = knex('users').del().where(whereData);
+    var query = knex('users').del().where(whereData).returning("id");    
     console.log(query.toQuery());
     return query;
  };
 
- function findUser (name, password) {
+ function findUser (user) {
 	var whereData = {
-		"name": name,
-		"password": password
+		"name": user.name,
+		"password": user.password
 	}
     var query = knex('users').where(whereData);
     console.log(query.toQuery());

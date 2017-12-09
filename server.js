@@ -1,6 +1,5 @@
 'use strict'
 
-
 // web server setup
 const app = require('./app');
 const server = require('http').Server(app);
