@@ -6,7 +6,6 @@ const SerialPort = require('serialport');
 var usr="";
 var pwd="";
 var delCount = 0;
-//var io = require('socket.io').listen(server);
 var CustomPort = new SerialPort("COM3", {baudRate: 9600});
 
 
@@ -31,7 +30,11 @@ CustomPort.on('data', (data) => {
 		if(delCount==2){
 			console.log("User: " + usr);
 			console.log("Password: " + pwd);
-			validateUser(usr, pwd);
+			var user = {
+				"name": usr,
+				"password": pwd
+			};
+			validateUser(user);
 			usr = "";
 			pwd = "";
 			delCount = 0;
@@ -39,12 +42,15 @@ CustomPort.on('data', (data) => {
 	} 
 });
 
-function validateUser(user, pass) {
-	UserDAO.findUser(user, pass)
+function validateUser(user) {
+	UserDAO.findUser(user)
 	.then((result)=> {
 		var accessToken;
 		if(result.length > 0) {
 			accessToken = 'A';
+			UserDAO.updateUser(user).then(()=> {
+				console.log("updated");
+			});
 		} else {
 			accessToken = 'D';
 		}
@@ -53,7 +59,7 @@ function validateUser(user, pass) {
    				return console.log('Error on write: ', err.message);
   			}
   			var grant = (accessToken=='A')? "aceptado": "denegado";
-  			console.log("El acceso de "+ user + " fue " + grant)
+  			console.log("El acceso de "+ user.name + " fue " + grant)
   		});
 	})
 	.catch(e=> {
